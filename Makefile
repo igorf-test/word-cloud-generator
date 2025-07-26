@@ -36,7 +36,7 @@ getver:
 build:
 	@echo "Creating compiled builds in ./artifacts"
 	@env GOOS=darwin GOARCH=amd64 go build -o ./artifacts/osx/${BINARY} -v .
-	@env GOOS=linux GOARCH=amd64 go build -o ./artifacts/linux/${BINARY} -v .
+	@env GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -o ./artifacts/linux/${BINARY} -v .
 	@env GOOS=windows GOARCH=amd64 go build -o ./artifacts/windows/${BINARY} -v .
 	@ls -lR ./artifacts
 
@@ -44,22 +44,26 @@ docker-build: docker-build-mac docker-build-amd
 
 docker-build-mac: build
 	@echo "Creating the docker on alpine linux for mac (linux/arm64) host"
-	docker build -f ./Dockerfile -t wickett/word-cloud-generator:$(ver)-arm64 -t wickett/word-cloud-generator:latest-arm64 .
+	docker build -f ./Dockerfile -t igorf-test/word-cloud-generator:$(ver)-arm64 -t igorf-test/word-cloud-generator:latest-arm64 .
 
 docker-build-amd: getver build
 	@echo "Creating the docker on alpine linux for linux/amd64 host"
-	docker buildx build --load --platform linux/amd64 -f ./Dockerfile -t wickett/word-cloud-generator:$(ver)-amd64 -t wickett/word-cloud-generator:latest-amd64 .
+	docker buildx build --load --platform linux/amd64 -f ./Dockerfile -t igorf-test/word-cloud-generator:$(ver)-amd64 -t igorf-test/word-cloud-generator:latest-amd64 .
 
-docker-run:
-	@echo "Starting new container of word-cloud-generator listening on localhost:8888"
-	docker run -it --rm -p 8888:8888 wickett/word-cloud-generator:latest-arm64
+docker-run-arm:
+	@echo "Starting new container of word-cloud-generator listening on localhost:8888 for ARM"
+	docker run -it --rm -p 8888:8888 igorf-test/word-cloud-generator:latest-arm64
+
+docker-run-amd:
+	@echo "Starting new container of word-cloud-generator listening on localhost:8888 for AMD"
+	docker run -it --rm -p 8888:8888 igorf-test/word-cloud-generator:latest-amd64
 
 docker-push:
 	@echo "Pushing docker image to dockerhub"
-	docker push wickett/word-cloud-generator:$(ver)-amd64
-	docker push wickett/word-cloud-generator:latest-amd64
-	docker push wickett/word-cloud-generator:$(ver)-arm64
-	docker push wickett/word-cloud-generator:latest-arm64
+	docker push igorf-test/word-cloud-generator:$(ver)-amd64
+	docker push igorf-test/word-cloud-generator:latest-amd64
+	docker push igorf-test/word-cloud-generator:$(ver)-arm64
+	docker push igorf-test/word-cloud-generator:latest-arm64
 
 clean:
 	@echo "Cleaning up previous builds"
