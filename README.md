@@ -13,6 +13,9 @@ This project is a a sample app for a class on Continuous Delivery at LinkedIn Le
 3. Set $PATH `export PATH=$PATH:$(go env GOPATH)/bin`
 5. Install goconvey - `go get github.com/smartystreets/goconvey`
 
+## Docker
+We use the buildx for 'docker-build-amd' in Makefile. Please run `docker buildx create --use` for prepare Builder with Buildx support.
+
 ## Git
 We use git hooks to standardize development on the project. Please run `make git-hooks` to get started.
 
