@@ -25,7 +25,7 @@ jobs:
       run: make test
       
     - name: 'Upload Artifact'
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: word-cloud-generator
         path: ./artifacts/linux/word-cloud-generator
@@ -43,6 +43,8 @@ jobs:
         with:
           name: word-cloud-generator
           path: ./artifacts/linux/
+          pattern: word-cloud-generator-*
+          merge-multiple: true
           
       - name: Docker meta
         id: meta
