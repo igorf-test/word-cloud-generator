@@ -44,26 +44,26 @@ docker-build: docker-build-mac docker-build-amd
 
 docker-build-mac: build
 	@echo "Creating the docker on alpine linux for mac (linux/arm64) host"
-	docker build -f ./Dockerfile -t igorf-test/word-cloud-generator:$(ver)-arm64 -t igorf-test/word-cloud-generator:latest-arm64 .
+	docker build -f ./Dockerfile -t igorftest/word-cloud-generator:$(ver)-arm64 -t igorftest/word-cloud-generator:latest-arm64 .
 
 docker-build-amd: getver build
 	@echo "Creating the docker on alpine linux for linux/amd64 host"
-	docker buildx build --load --platform linux/amd64 -f ./Dockerfile -t igorf-test/word-cloud-generator:$(ver)-amd64 -t igorf-test/word-cloud-generator:latest-amd64 .
+	docker buildx build --load --platform linux/amd64 -f ./Dockerfile -t igorftest/word-cloud-generator:$(ver)-amd64 -t igorftest/word-cloud-generator:latest-amd64 .
 
 docker-run-arm:
 	@echo "Starting new container of word-cloud-generator listening on localhost:8888 for ARM"
-	docker run -it --rm -p 8888:8888 igorf-test/word-cloud-generator:latest-arm64
+	docker run -it --rm -p 8888:8888 igorftest/word-cloud-generator:latest-arm64
 
 docker-run-amd:
 	@echo "Starting new container of word-cloud-generator listening on localhost:8888 for AMD"
-	docker run -it --rm -p 8888:8888 igorf-test/word-cloud-generator:latest-amd64
+	docker run -it --rm -p 8888:8888 igorftest/word-cloud-generator:latest-amd64
 
 docker-push:
 	@echo "Pushing docker image to dockerhub"
-	docker push igorf-test/word-cloud-generator:$(ver)-amd64
-	docker push igorf-test/word-cloud-generator:latest-amd64
-	docker push igorf-test/word-cloud-generator:$(ver)-arm64
-	docker push igorf-test/word-cloud-generator:latest-arm64
+	docker push igorftest/word-cloud-generator:$(ver)-amd64
+	docker push igorftest/word-cloud-generator:latest-amd64
+	docker push igorftest/word-cloud-generator:$(ver)-arm64
+	docker push igorftest/word-cloud-generator:latest-arm64
 
 clean:
 	@echo "Cleaning up previous builds"
